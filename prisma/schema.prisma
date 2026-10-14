@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  OWNER
+  STAFF
+  RECEPTIONIST
+  DOCTOR
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  passwordHash String
+  name String?
+  clinics Clinic[]
+  clinicMember ClinicMember[]
+}
+
+model Clinic {
+  id Int @id @default(autoincrement())
+  name String
+  location String
+  ownerId Int
+  owner User @relation(fields: [ownerId], references: [id])
+  clinicMembers ClinicMember[]
+  @@unique([ownerId, name, location])
+}
+
+model ClinicMember {
+  id Int @id @default(autoincrement())
+  role Role
+  clinicId Int
+  clinic Clinic @relation(fields: [clinicId], references: [id])
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  @@unique([clinicId, userId])
+}

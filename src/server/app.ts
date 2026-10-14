@@ -1,0 +1,28 @@
+import express from "express"
+import { errorHandler } from "shared/utilities/errorHandler.js"
+import morgan from "morgan"
+import YAML from "yaml"
+import { readFileSync } from "node:fs"
+import { resolve } from "node:path"
+import swaggerUi from "swagger-ui-express"
+import { PREFIX_AUTH, PREFIX_CLINIC, PREFIX_MEMBER } from "shared/config/endpoints.js"
+import { authRouter } from "features/auth/authRouter.js"
+import { clinicRouter } from "features/clinics/clinicRouter.js"
+import { memberRouter } from "features/clinicMembers/memberRouter.js"
+
+export const app = express()
+app.use(express.json({limit: "50kb"}))
+app.use(express.urlencoded({extended: true}))
+
+
+app.use(morgan("dev"))
+
+app.use(PREFIX_AUTH, authRouter)
+app.use(PREFIX_CLINIC, clinicRouter)
+app.use(PREFIX_MEMBER, memberRouter)
+
+const swaggerDocument = YAML.parse(
+    readFileSync(resolve(process.cwd(), "openapi.yaml"), "utf-8")
+)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(errorHandler)
