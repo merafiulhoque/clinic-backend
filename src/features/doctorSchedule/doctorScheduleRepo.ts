@@ -15,7 +15,8 @@ export const createDoctorSchedule = async (
 }
 
 export const doctorsExistingSchedule = async (
-    data: createScheduleData
+    data: createScheduleData,
+    doctorId: number
 ) => {
     return await prisma.doctorSchedule.findMany({
         where: {
@@ -25,6 +26,9 @@ export const doctorsExistingSchedule = async (
             },
             endTime: {
                 gt: data.startTime                
+            },
+            doctorClinic: {
+                doctorId: doctorId
             }
         },
         select: {
@@ -37,7 +41,25 @@ export const doctorsExistingSchedule = async (
                         }
                     }
                 }
-            }
+            },
+            startTime: true,
+            endTime: true
         }
     })
 }
+
+
+export const findDoctorClinic = async (doctorClinicId: number) => {
+  return prisma.doctorClinic.findUnique({
+    where: { id: doctorClinicId },
+    select: {
+      doctorId: true,
+      clinics: {
+        select: {
+          ownerId: true,
+        },
+      },
+    },
+  });
+};
+

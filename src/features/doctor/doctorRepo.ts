@@ -33,3 +33,28 @@ export const createDoctor = async (
     })
 }
 
+export const getDoctorsList = async (
+    ownerId: number
+) => {
+    return prisma.doctor.findMany({
+        where: {
+            createdById: ownerId
+        },
+        select: {
+            firstName: true,
+            middleName: true,
+            lastName: true,
+            doctorClinics: {
+                select: {
+                    clinicId: true,
+                    clinics: {
+                        select: {
+                            name: true,
+                            location: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+}

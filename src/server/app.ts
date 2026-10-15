@@ -5,11 +5,18 @@ import YAML from "yaml"
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
 import swaggerUi from "swagger-ui-express"
-import { PREFIX_AUTH, PREFIX_CLINIC, PREFIX_DOCTOR, PREFIX_MEMBER } from "shared/config/endpoints.js"
+import { 
+    PREFIX_AUTH, 
+    PREFIX_CLINIC, 
+    PREFIX_DOCTOR, 
+    PREFIX_MEMBER, 
+    PREFIX_SCHEDULE 
+} from "shared/config/endpoints.js"
 import { authRouter } from "features/auth/authRouter.js"
 import { clinicRouter } from "features/clinics/clinicRouter.js"
 import { memberRouter } from "features/clinicMembers/memberRouter.js"
 import { doctorRouter } from "features/doctor/doctorRouter.js"
+import { scheduleRouter } from "features/doctorSchedule/scheduleRouter.js"
 
 export const app = express()
 app.use(express.json({limit: "50kb"}))
@@ -22,6 +29,7 @@ app.use(PREFIX_AUTH, authRouter)
 app.use(PREFIX_CLINIC, clinicRouter)
 app.use(PREFIX_MEMBER, memberRouter)
 app.use(PREFIX_DOCTOR, doctorRouter)
+app.use(PREFIX_SCHEDULE, scheduleRouter)
 
 const swaggerDocument = YAML.parse(
     readFileSync(resolve(process.cwd(), "openapi.yaml"), "utf-8")

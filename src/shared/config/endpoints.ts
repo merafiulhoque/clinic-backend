@@ -17,13 +17,20 @@ export const CLINIC_ENDPOINTS = {
     GET_USER_CLINIC_INFO: "/get-info"
 } as const
 
-export const PREFIX_MEMBER = BASE + "/member"
+export const PREFIX_MEMBER = BASE + "/member" 
 
 export const MEMBER_ENDPOINTS = {
     CREATE: "/create"
-}
+} as const
 
 export const PREFIX_DOCTOR = BASE + "/doctor"
 export const DOCTOR_ENDPOINTS = {
+    CREATE: "/create",
+    GET: "/get-list",
+    
+} as const
+
+export const PREFIX_SCHEDULE = BASE + "/schedule"
+export const SCHEDULE_ENDPOINTS = {
     CREATE: "/create"
-}
+} as const
