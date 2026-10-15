@@ -12,6 +12,12 @@ enum Role {
   STAFF
   RECEPTIONIST
   DOCTOR
+  MANAGER
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
 }
 
 model User {
@@ -21,6 +27,8 @@ model User {
   name String?
   clinics Clinic[]
   clinicMember ClinicMember[]
+  doctor Doctor?
+  createdDoctors Doctor[] @relation("doctorCreatedBy")
 }
 
 model Clinic {
@@ -30,6 +38,7 @@ model Clinic {
   ownerId Int
   owner User @relation(fields: [ownerId], references: [id])
   clinicMembers ClinicMember[]
+  doctorClinic DoctorClinic[]
   @@unique([ownerId, name, location])
 }
 
@@ -41,4 +50,31 @@ model ClinicMember {
   userId Int
   user User @relation(fields: [userId], references: [id])
   @@unique([clinicId, userId])
+}
+
+model Doctor {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+  firstName String
+  middleName String?
+  lastName String?
+  qualification String?
+  additionalQualification String?
+  experience String?
+  createdById Int
+  registrationNo String
+  createdBy User @relation("doctorCreatedBy", fields: [createdById], references: [id])
+  doctorClinics DoctorClinic[]
+}
+
+model DoctorClinic {
+  id Int @id @default(autoincrement())
+  fees Int
+  doctorId Int
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+  clinicId Int
+  clinics Clinic @relation(fields: [clinicId], references: [id])
+
+  @@unique([doctorId, clinicId])
 }
