@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { Request, Response, NextFunction } from "express";
 
 
@@ -18,12 +19,24 @@ export const errorHandler = (
         return res.status(err.statusCode).json({error: err.message})
     }
 
+    if (err instanceof PrismaClientKnownRequestError){
+        if (err.code === "P2002"){
+            return res.status(409).json({error: "record already exists"})
+        }
+        if (err.code === "P2025"){
+            return res.status(404).json({error: "record not found"})
+        }
+        return res.status(500).json({
+            error: "Internal server error",
+        });
+    }
+
     // if (err instanceof JsonWebTokenError){
     //     return res.status(500).json({error: err.message})
     // }
 
     if (err instanceof Error){
-        return res.status(500).json({error: err.message})
+        return res.status(500).json({error: "Internal server error"})
     }
-    return res.status(500).json({error: err.message ?? "something went wrong"})
+    return res.status(500).json({error: err.message ?? "Internal server error"})
 }

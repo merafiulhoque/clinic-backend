@@ -22,3 +22,8 @@ export const PREFIX_MEMBER = BASE + "/member"
 export const MEMBER_ENDPOINTS = {
     CREATE: "/create"
 }
+
+export const PREFIX_DOCTOR = BASE + "/doctor"
+export const DOCTOR_ENDPOINTS = {
+    CREATE: "/create"
+}

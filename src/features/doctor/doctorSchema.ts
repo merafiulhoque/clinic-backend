@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const doctorCreateSchema = z.object({
+export const createDoctorSchema = z.object({
     email: z.string(),
     password: z.string().min(6),
     firstName: z.string(),
@@ -13,4 +13,4 @@ export const doctorCreateSchema = z.object({
 })
 
 
-export type createDoctorData = z.infer<typeof doctorCreateSchema>
+export type createDoctorData = z.infer<typeof createDoctorSchema>
