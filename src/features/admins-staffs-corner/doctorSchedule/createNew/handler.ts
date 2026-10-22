@@ -4,6 +4,7 @@ import { createScheduleSchema } from "../doctorScheduleSchema.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 import { ERR_INVALID_INPUT, ERR_UNAUTHORIZED } from "shared/domainerrors/errors.js";
 import { createScheduleService } from "./service.js";
+import { formatTime } from "shared/utilities/formatTime.js";
 
 export const createDoctorScheduleHandler = async (
     req: Request,
@@ -30,7 +31,7 @@ export const createDoctorScheduleHandler = async (
             (conflict, index) =>
                 `${index + 1}. Clinic: ${conflict.clinic}\n` +
                 `   Location: ${conflict.location}\n` +
-                `   Existing session: ${conflict.startTime} - ${conflict.endTime}`
+                `   Existing session: ${formatTime(conflict.startTime)} - ${formatTime(conflict.endTime)}`
             ),
         ].join("\n\n");
 

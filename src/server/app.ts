@@ -14,11 +14,11 @@ import {
     PREFIX_SCHEDULE 
 } from "shared/config/endpoints.js"
 import { authRouter } from "features/auth/authRouter.js"
-import { clinicRouter } from "features/clinics/clinicRouter.js"
-import { memberRouter } from "features/clinicMembers/memberRouter.js"
-import { doctorRouter } from "features/doctor/doctorRouter.js"
-import { scheduleRouter } from "features/doctorSchedule/scheduleRouter.js"
-import { doctorClinicRouter } from "features/clinic-doctor/doctorClinicRouter.js"
+import { clinicRouter } from "features/admins-staffs-corner/clinics/clinicRouter.js"
+import { memberRouter } from "features/admins-staffs-corner/clinicMembers/memberRouter.js"
+import { doctorRouter } from "features/admins-staffs-corner/doctor/doctorRouter.js"
+import { scheduleRouter } from "features/admins-staffs-corner/doctorSchedule/scheduleRouter.js"
+import { doctorClinicRouter } from "features/admins-staffs-corner/clinic-doctor/doctorClinicRouter.js"
 
 export const app = express()
 app.use(express.json({limit: "50kb"}))
