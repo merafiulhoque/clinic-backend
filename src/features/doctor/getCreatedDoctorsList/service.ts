@@ -16,6 +16,7 @@ export const getDoctorsListService = async (
     console.log(lists)
 
     const normalizedList = lists.map( list => ({
+        doctorId: list.id,
         fullName: list.firstName + " " +list.middleName + " "+  list.lastName,
         clinics: list.doctorClinics.map(clinic => ({
             clinicId: clinic.clinicId,

@@ -27,6 +27,7 @@ export const PREFIX_DOCTOR = BASE + "/doctor"
 export const DOCTOR_ENDPOINTS = {
     CREATE: "/create",
     GET: "/get-list",
+    ASSIGN: "/assign"
     
 } as const
 

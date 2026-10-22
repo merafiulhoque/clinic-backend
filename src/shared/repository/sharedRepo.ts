@@ -10,7 +10,8 @@ export const isUserAnOwner = async (
             role: Role.OWNER
         },
         select: {
-            id: true 
+            id: true,
+            clinicId: true 
         }
     })
 }
@@ -21,5 +22,18 @@ export const emailExist = async (
     return prisma.user.findUnique({
         where: {email},
         select: {id: true}
+    })
+}
+
+export const getOwnerId = async (
+    clinicId: number
+) => {
+    return prisma.clinic.findUnique({
+        where: {
+            id: clinicId
+        },
+        select: {
+            ownerId: true
+        }
     })
 }
