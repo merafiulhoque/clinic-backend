@@ -1,4 +1,3 @@
-import { isUserAnOwner } from "shared/repository/sharedRepo.js";
 import { createScheduleData } from "../doctorScheduleSchema.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 import { createDoctorSchedule, doctorsExistingSchedule, findDoctorClinic } from "../doctorScheduleRepo.js";

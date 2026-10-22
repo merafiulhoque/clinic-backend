@@ -1,6 +1,6 @@
 import { getOwnerId } from "shared/repository/sharedRepo.js";
-import { assignDoctorToClinic } from "../doctorRepo.js";
-import { assignDoctorToClinicData } from "../doctorSchema.js";
+import { assignDoctorToClinic } from "../clinicDoctorRepo.js";
+import { assignDoctorToClinicData } from "../schemas.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 
 export const assignDoctorService = async (

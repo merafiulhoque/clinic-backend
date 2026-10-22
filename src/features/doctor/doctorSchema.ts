@@ -15,10 +15,3 @@ export const createDoctorSchema = z.object({
 
 export type createDoctorData = z.infer<typeof createDoctorSchema>
 
-export const assignDoctorToClinicSchema = z.object({
-    doctorId: z.number(),
-    clinicId: z.number(),
-    fees: z.number()
-})
-
-export type assignDoctorToClinicData = z.infer<typeof assignDoctorToClinicSchema>

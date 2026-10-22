@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { validateSchema } from "shared/utilities/validateSchema.js"
-import { assignDoctorToClinicSchema } from "../doctorSchema.js"
+import { assignDoctorToClinicSchema } from "../schemas.js"
 import { assignDoctorService } from "./service.js"
 
 export const assignDoctorhandler = async (

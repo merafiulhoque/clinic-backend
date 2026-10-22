@@ -26,12 +26,17 @@ export const MEMBER_ENDPOINTS = {
 export const PREFIX_DOCTOR = BASE + "/doctor"
 export const DOCTOR_ENDPOINTS = {
     CREATE: "/create",
-    GET: "/get-list",
-    ASSIGN: "/assign"
+    GET: "/get-list"
     
 } as const
 
 export const PREFIX_SCHEDULE = BASE + "/schedule"
 export const SCHEDULE_ENDPOINTS = {
     CREATE: "/create"
+} as const
+
+export const PREFIX_DOCTOR_CLINIC = BASE + "/doctor-clinic"
+
+export const DOCTORCLINIC_ENDPOINTS = {
+    ASSIGN: "/assign"
 } as const

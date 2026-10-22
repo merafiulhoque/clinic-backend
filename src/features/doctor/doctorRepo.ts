@@ -1,6 +1,6 @@
 import { Role } from "generated/prisma/enums.js"
 import { prisma } from "shared/clients/prisma.js"
-import { assignDoctorToClinicData, createDoctorData } from "./doctorSchema.js"
+import {  createDoctorData } from "./doctorSchema.js"
 
 
 export const createDoctor = async (
@@ -54,28 +54,6 @@ export const getDoctorsList = async (
                             location: true
                         }
                     }
-                }
-            }
-        }
-    })
-}
-
-export const assignDoctorToClinic = async (
-    data: assignDoctorToClinicData
-) => {
-    return prisma.doctorClinic.create({
-        data: {
-            ...data
-        }, 
-        select : {
-            doctor: {
-                select: {
-                    firstName: true
-                }
-            },
-            clinics: {
-                select: {
-                    name: true
                 }
             }
         }
