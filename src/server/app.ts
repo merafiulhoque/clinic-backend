@@ -11,6 +11,7 @@ import {
     PREFIX_DOCTOR, 
     PREFIX_DOCTOR_CLINIC, 
     PREFIX_MEMBER, 
+    PREFIX_PUBLIC_CORNER, 
     PREFIX_SCHEDULE 
 } from "shared/config/endpoints.js"
 import { authRouter } from "features/auth/authRouter.js"
@@ -19,6 +20,7 @@ import { memberRouter } from "features/admins-staffs-corner/clinicMembers/member
 import { doctorRouter } from "features/admins-staffs-corner/doctor/doctorRouter.js"
 import { scheduleRouter } from "features/admins-staffs-corner/doctorSchedule/scheduleRouter.js"
 import { doctorClinicRouter } from "features/admins-staffs-corner/clinic-doctor/doctorClinicRouter.js"
+import { publicRouter } from "features/public-corner/publicRouter.js"
 
 export const app = express()
 app.use(express.json({limit: "50kb"}))
@@ -33,6 +35,7 @@ app.use(PREFIX_MEMBER, memberRouter)
 app.use(PREFIX_DOCTOR, doctorRouter)
 app.use(PREFIX_SCHEDULE, scheduleRouter)
 app.use(PREFIX_DOCTOR_CLINIC, doctorClinicRouter)
+app.use(PREFIX_PUBLIC_CORNER, publicRouter) 
 
 const swaggerDocument = YAML.parse(
     readFileSync(resolve(process.cwd(), "openapi.yaml"), "utf-8")

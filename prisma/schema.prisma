@@ -72,6 +72,7 @@ model Doctor {
   lastName String?
   qualification String?
   additionalQualification String?
+  specialization String?
   experience String?
   createdById Int
   registrationNo String

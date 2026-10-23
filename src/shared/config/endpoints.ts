@@ -40,3 +40,9 @@ export const PREFIX_DOCTOR_CLINIC = BASE + "/doctor-clinic"
 export const DOCTORCLINIC_ENDPOINTS = {
     ASSIGN: "/assign"
 } as const
+
+export const PREFIX_PUBLIC_CORNER = BASE + "/public-corner"
+
+export const PUBLIC_ENDPOINTS = {
+    VIEW_DOCTORS: "/view-doctors"
+} as const

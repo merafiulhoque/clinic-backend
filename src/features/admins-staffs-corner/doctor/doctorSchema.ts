@@ -9,7 +9,8 @@ export const createDoctorSchema = z.object({
     qualification: z.string().optional(),
     additionalQualification: z.string().optional(),
     experience: z.string().optional(),
-    registrationNo: z.string()
+    registrationNo: z.string(),
+    specialization: z.string().optional()
 })
 
 
