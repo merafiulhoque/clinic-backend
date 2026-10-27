@@ -19,7 +19,7 @@ export const bookSlotSchema = z.object({
     ),
     patientName: z.string().trim().min(1),
     patientEmail: z.email(),
-    patientPhone: z.string().trim().min(10),
+    patientPhone: z.string().trim().min(10).max(20).regex(/^[+0-9\s-]+$/),
     idempotencyKey: z.uuid(),
 });
 

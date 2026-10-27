@@ -10,10 +10,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": "./src",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "*": ["*"]
+      "*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts"],

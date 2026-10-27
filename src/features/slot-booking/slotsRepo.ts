@@ -60,6 +60,24 @@ export const bookSlot = async (
     data: BookSlotData
 ) => {
     return prisma.$transaction(async tx => {
+        const existingAppointment = await tx.appointment.findUnique({
+            where: {
+                idempotencyKey: data.idempotencyKey,
+            },
+            select: {
+                id: true,
+                doctorScheduleId: true,
+                appointmentDate: true,
+                startTime: true,
+                endTime: true,
+                status: true,
+            },
+        })
+
+        if (existingAppointment) {
+            return existingAppointment
+        }
+
         await tx.$queryRaw`
         SELECT id
         FROM "DoctorSchedule"

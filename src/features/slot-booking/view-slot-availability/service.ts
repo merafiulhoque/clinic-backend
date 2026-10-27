@@ -7,8 +7,6 @@ export const viewSlotService = async (
 ): Promise<Slots[]> => {
     const schedules = await viewAppointments(doctorClinicId, date);
 
-    console.log(schedules)
-    
     return schedules.flatMap((schedule) => {
         const lastAppointment = schedule.appointments[0];
 

@@ -13,7 +13,7 @@ export const signJWT = (
         secret,
         {
             algorithm: SECRETS.JWT_SIGNING_METHOD,
-            expiresIn: expiryInSeconds*1000,
+            expiresIn: expiryInSeconds,
             issuer: SECRETS.TOKEN_ISSUER,
             subject: SECRETS.TOKEN_SUB
         }
@@ -24,13 +24,19 @@ export const verifyJWT = (
     token: string,
     secret: string
 ) => {
-    const data = jwt.verify(
-        token,
-        secret,
-        {
-            algorithms: [SECRETS.JWT_SIGNING_METHOD]
-        }
-    )
+    let data: jwt.JwtPayload | string
+
+    try {
+        data = jwt.verify(
+            token,
+            secret,
+            {
+                algorithms: [SECRETS.JWT_SIGNING_METHOD]
+            }
+        )
+    } catch {
+        throw new AppError(401, "unauthorized")
+    }
 
     if (
         typeof data === "string" ||
