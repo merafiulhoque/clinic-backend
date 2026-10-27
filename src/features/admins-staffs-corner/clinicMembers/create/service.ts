@@ -1,5 +1,5 @@
 import { hashPassword } from "shared/utilities/bcrypt.js";
-import { memberCreateData } from "../memberSchema.js";
+import { memberCreateData } from "../schemas.js";
 import { createMember, isClinicOwner } from "../memberRepo.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 import { Role } from "generated/prisma/enums.js";

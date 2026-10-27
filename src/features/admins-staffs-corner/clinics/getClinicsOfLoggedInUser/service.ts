@@ -1,5 +1,5 @@
 import { getClinics } from "../clinicRepo.js"
-import { UserClinics } from "../clinicSchema.js"
+import { UserClinics } from "../schemas.js"
 
 export const userClinicInfoService = async (
     userId: number

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { validateSchema } from "shared/utilities/validateSchema.js"
-import { bookSlotSchema } from "../schema.js"
+import { bookSlotSchema } from "../schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { bookSlotService } from "./service.js"
 

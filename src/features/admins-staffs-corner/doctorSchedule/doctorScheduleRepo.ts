@@ -1,5 +1,5 @@
 import { prisma } from "shared/clients/prisma.js";
-import { createScheduleData } from "./doctorScheduleSchema.js";
+import { createScheduleData } from "./schemas.js";
 
 export const createDoctorSchedule = async (
     data: createScheduleData

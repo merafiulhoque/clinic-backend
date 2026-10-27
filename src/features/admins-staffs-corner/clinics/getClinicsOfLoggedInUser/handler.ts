@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { ERR_UNAUTHORIZED } from "shared/domainerrors/errors.js"
 import { AppError } from "shared/utilities/errorHandler.js"
-import { UserClinics } from "../clinicSchema.js"
+import { UserClinics } from "../schemas.js"
 import { userClinicInfoService } from "./service.js"
 
 

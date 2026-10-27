@@ -1,5 +1,5 @@
 import { prisma } from "shared/clients/prisma.js"
-import { clinicCreateData } from "./clinicSchema.js"
+import { clinicCreateData } from "./schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { Role } from "generated/prisma/enums.js"
 

@@ -1,6 +1,6 @@
 import { Role } from "generated/prisma/enums.js"
 import { prisma } from "shared/clients/prisma.js"
-import {  createDoctorData } from "./doctorSchema.js"
+import {  createDoctorData } from "./schemas.js"
 
 
 export const createDoctor = async (

@@ -1,5 +1,5 @@
 import { prisma } from "shared/clients/prisma.js";
-import { memberCreateData } from "./memberSchema.js";
+import { memberCreateData } from "./schemas.js";
 
 export const createMember = async (
     data: memberCreateData,

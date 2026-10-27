@@ -1,4 +1,4 @@
-import { BookSlotData } from "../schema.js";
+import { BookSlotData } from "../schemas.js";
 import { bookSlot } from "../slotsRepo.js";
 
 export const bookSlotService = async (

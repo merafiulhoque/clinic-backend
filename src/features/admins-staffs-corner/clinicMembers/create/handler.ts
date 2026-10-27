@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { validateSchema } from "shared/utilities/validateSchema.js"
-import { memberCreateSchema } from "../memberSchema.js"
+import { memberCreateSchema } from "../schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { ERR_INVALID_INPUT, ERR_UNAUTHORIZED } from "shared/domainerrors/errors.js"
 import { memberCreateService } from "./service.js"

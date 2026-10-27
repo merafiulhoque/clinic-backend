@@ -1,6 +1,6 @@
 import { AppointmentStatus, Weekday } from "generated/prisma/enums.js"
 import { prisma } from "shared/clients/prisma.js"
-import { BookSlotData } from "./schema.js"
+import { BookSlotData } from "./schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { APPOINTMENT_DURATION } from "shared/config/const.js"
 

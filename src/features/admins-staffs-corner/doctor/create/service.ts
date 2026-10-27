@@ -1,6 +1,6 @@
 import { AppError } from "shared/utilities/errorHandler.js";
 import { emailExist, isUserAnOwnerOrManager } from "../../../../shared/repository/sharedRepo.js";
-import { createDoctorData } from "../doctorSchema.js";
+import { createDoctorData } from "../schemas.js";
 import { hashPassword } from "shared/utilities/bcrypt.js";
 import { createDoctor } from "../doctorRepo.js";
 
