@@ -43,6 +43,14 @@ export const viewDoctors = async (
                     },
                 }]
                 : []),
+            ...(searchData.specialization
+                ? [{
+                    specialization: {
+                        contains: searchData.specialization,
+                        mode: "insensitive" as const,
+                    },
+                    }]
+                : []),
             ],
         },
         select: {
@@ -55,6 +63,7 @@ export const viewDoctors = async (
             specialization: true,
             doctorClinics: {
             select: {
+                id: true,
                 fees: true,
                 clinics: {
                 select: {
@@ -70,4 +79,14 @@ export const viewDoctors = async (
         take: searchData.limit,
         orderBy: { id: "asc" },
         });
+}
+
+export const viewSchedule = async (
+    doctorClinicId: number
+) => {
+    return prisma.doctorSchedule.findMany({
+        where: {
+            doctorClinicId
+        }
+    })
 }

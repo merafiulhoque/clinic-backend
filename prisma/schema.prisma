@@ -20,6 +20,12 @@ enum Status {
   INACTIVE
 }
 
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
 
 enum Weekday {
   SUNDAY
@@ -88,16 +94,35 @@ model DoctorClinic {
   clinicId Int
   clinics Clinic @relation(fields: [clinicId], references: [id])
   doctorSchedule DoctorSchedule[]
-
   @@unique([doctorId, clinicId])
 }
 
 
 model DoctorSchedule {
   id Int @id @default(autoincrement())
-  doctorClinicId Int //id of clinic doctor's id
+  doctorClinicId Int //id of DoctorClinic's id
   doctorClinic DoctorClinic @relation(fields: [doctorClinicId], references: [id], onDelete: Cascade)
   dayOfWeek Weekday
   startTime Int // minute since midnight, eg 600 for 10.00 AM
   endTime Int 
+  appointments Appointment[]
+}
+
+
+model Appointment {
+  id Int @id @default(autoincrement())
+  doctorScheduleId Int
+  doctorSchedule DoctorSchedule @relation(fields: [doctorScheduleId], references: [id])
+  patientName String
+  patientEmail String
+  patientPhone String
+  appointmentDate DateTime @db.Date
+  startTime Int //minutes since midnight
+  endTime Int //minutes since midnight
+  status AppointmentStatus @default(PENDING)
+  idempotencyKey String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([doctorScheduleId, appointmentDate, status])
+  @@unique([appointmentDate, doctorScheduleId, patientPhone])
 }

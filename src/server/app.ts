@@ -21,6 +21,7 @@ import { doctorRouter } from "features/admins-staffs-corner/doctor/doctorRouter.
 import { scheduleRouter } from "features/admins-staffs-corner/doctorSchedule/scheduleRouter.js"
 import { doctorClinicRouter } from "features/admins-staffs-corner/clinic-doctor/doctorClinicRouter.js"
 import { publicRouter } from "features/public-corner/publicRouter.js"
+import { slotRouter } from "features/slot-booking/slotRouter.js"
 
 export const app = express()
 app.use(express.json({limit: "50kb"}))
@@ -36,6 +37,7 @@ app.use(PREFIX_DOCTOR, doctorRouter)
 app.use(PREFIX_SCHEDULE, scheduleRouter)
 app.use(PREFIX_DOCTOR_CLINIC, doctorClinicRouter)
 app.use(PREFIX_PUBLIC_CORNER, publicRouter) 
+app.use(PREFIX_PUBLIC_CORNER, slotRouter)
 
 const swaggerDocument = YAML.parse(
     readFileSync(resolve(process.cwd(), "openapi.yaml"), "utf-8")

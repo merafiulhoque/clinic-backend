@@ -1,0 +1,1 @@
+export const APPOINTMENT_DURATION = 10 as const //10 minute

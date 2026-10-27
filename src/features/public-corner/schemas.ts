@@ -1,10 +1,11 @@
+import { Weekday } from "generated/prisma/enums.js";
 import { z } from "zod";
 
 export const publicDoctorSearchSchema = z.object({
   clinicName: z.string().trim().min(1).optional(),
   doctorName: z.string().trim().min(1).optional(),
   location: z.string().trim().min(1).optional(),
-  speciality: z.string().trim().min(1).optional(),
+  specialization: z.string().trim().min(1).optional(),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(20),
 });
@@ -22,6 +23,7 @@ export type rawDoctorsList = {
     additionalQualification: string | null;
     specialization: string | null;
     doctorClinics: {
+        id: number,
         clinics: {
             location: string;
             id: number;
@@ -44,9 +46,26 @@ export type normalizedDoctorList = {
     additionalQualification: string | null,
     specialization: string | null,
     clinics: {
+        doctorClinicId: number,
         clinicId: number,
         clinicName: string,
         clinicLocation: string
         fees: number
     }[]
+}
+
+export type RawDoctorSchedule = {
+    id: number;
+    doctorClinicId: number;
+    dayOfWeek: Weekday;
+    startTime: number;
+    endTime: number;
+}
+
+export type RefinedDoctorSchedule = {
+    id: number;
+    doctorClinicId: number;
+    dayOfWeek: Weekday;
+    startTime: string;
+    endTime: string;
 }

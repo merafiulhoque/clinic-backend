@@ -20,6 +20,7 @@ const normalizeDoctorsList = (data: rawDoctorsList[]): normalizedDoctorList[] =>
         additionalQualification: raw.additionalQualification,
         specialization: raw.specialization,
         clinics: raw.doctorClinics.map(clinic => ({
+            doctorClinicId: clinic.id,
             clinicId: clinic.clinics.id,
             clinicName: clinic.clinics.name,
             clinicLocation: clinic.clinics.location,

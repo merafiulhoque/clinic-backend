@@ -44,5 +44,8 @@ export const DOCTORCLINIC_ENDPOINTS = {
 export const PREFIX_PUBLIC_CORNER = BASE + "/public-corner"
 
 export const PUBLIC_ENDPOINTS = {
-    VIEW_DOCTORS: "/view-doctors"
+    VIEW_DOCTORS: "/view-doctors",
+    GET_SCHEDULE: "/:doctorClinicId/schedule",
+    GET_SLOTS: "/:doctorClinicId/slots",
+    BOOK_SLOT: "/book-slot"
 } as const
