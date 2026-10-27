@@ -1,20 +1,39 @@
 import { Role } from "generated/prisma/enums.js"
 import { prisma } from "shared/clients/prisma.js"
 
-export const isUserAnOwner = async (
+export const isUserAnOwnerOrManager = async (
     userId: number
 ) => {
+    const ownsClinic = await prisma.clinic.findFirst({
+        where: {
+            ownerId: userId
+        },
+        select: {
+            id: true
+        }
+    })
+
+    if (ownsClinic) {
+        return ownsClinic
+    }
+
     return prisma.clinicMember.findFirst({
         where: {
             userId,
-            role: Role.OWNER
+            role: {
+                in: [Role.OWNER, Role.MANAGER]
+            }
         },
         select: {
             id: true,
-            clinicId: true 
+            clinicId: true
         }
     })
 }
+
+export const isUserAnOwner = async (
+    userId: number
+) => isUserAnOwnerOrManager(userId)
 
 export const emailExist = async (
     email: string

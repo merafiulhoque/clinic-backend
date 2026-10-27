@@ -1,5 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
 
 export class AppError extends Error{
@@ -19,6 +20,14 @@ export const errorHandler = (
         return res.status(err.statusCode).json({error: err.message})
     }
 
+    if (
+        err instanceof jwt.JsonWebTokenError ||
+        err instanceof jwt.TokenExpiredError ||
+        err instanceof jwt.NotBeforeError
+    ){
+        return res.status(401).json({error: "unauthorized"})
+    }
+
     if (err instanceof PrismaClientKnownRequestError){
         if (err.code === "P2002"){
             return res.status(409).json({error: "record already exists"})
@@ -30,10 +39,6 @@ export const errorHandler = (
             error: "Internal server error",
         });
     }
-
-    // if (err instanceof JsonWebTokenError){
-    //     return res.status(500).json({error: err.message})
-    // }
 
     if (err instanceof Error){
         return res.status(500).json({error: err.message})

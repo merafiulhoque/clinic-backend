@@ -1,10 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Clinic management backend",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server/server.ts"
+    "dev": "tsx watch src/server/server.ts",
+    "build": "tsc --project tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +36,7 @@
     "@types/node": "^26.6.5",
     "@types/swagger-ui-express": "^4.1.8",
     "prisma": "^7.10.0",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }
