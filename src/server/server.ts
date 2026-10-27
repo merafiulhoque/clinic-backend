@@ -5,7 +5,7 @@ import cfg from "shared/config/env.js";
 
     try {
         if (! cfg.READY ){
-            console.log("ENV: .env not ready")
+            throw new Error("Required environment configuration is missing")
         }
 
         await redis.connect()
@@ -15,8 +15,7 @@ import cfg from "shared/config/env.js";
             console.log(`SERVER: running at ${cfg.HOST + ":" + cfg.PORT}`)
         })
     } catch (error) {
-        console.log("Failed to start server:: ERROR: ", error)
+        console.error("Failed to start server:", error)
         process.exit(1)
     }
 })()
-

@@ -8,7 +8,7 @@ export const getUserMiddleware = (
     req: Request,
     res: Response,
     next: NextFunction
-) => {
+): Promise<void> => {
     const authHeader = req.headers.authorization
     if (!authHeader) throw new AppError(ERR_BAD_REQUEST.status, ERR_BAD_REQUEST.error)
     
@@ -20,7 +20,9 @@ export const getUserMiddleware = (
     ){
         throw new AppError(ERR_MALFORMED_TOKEN.status, ERR_MALFORMED_TOKEN.error)
     }
-    const user = verifyJWT(parts[1], cfg.ACCESS_TOKEN_SECRET!)
-    req.user = user
-    next()
+    return verifyJWT(parts[1], cfg.ACCESS_TOKEN_SECRET!).then((user) => {
+        req.accessToken = parts[1]
+        req.user = user
+        next()
+    })
 }

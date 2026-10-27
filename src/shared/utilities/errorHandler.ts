@@ -11,7 +11,7 @@ export class AppError extends Error{
 }
 
 export const errorHandler = (
-    err: any,
+    err: unknown,
     _req: Request,
     res: Response,
     _next: NextFunction
@@ -35,13 +35,8 @@ export const errorHandler = (
         if (err.code === "P2025"){
             return res.status(404).json({error: "record not found"})
         }
-        return res.status(500).json({
-            error: "Internal server error",
-        });
     }
 
-    if (err instanceof Error){
-        return res.status(500).json({error: err.message})
-    }
-    return res.status(500).json({error: err.message ?? "Internal server error"})
+    console.error("Unhandled request error:", err)
+    return res.status(500).json({error: "Internal server error"})
 }
