@@ -1,3 +1,4 @@
+import { Role } from "generated/prisma/enums.js";
 import z from "zod";
 
 export const userSignupSchema = z.object({
@@ -17,3 +18,4 @@ export type userSigninData = z.infer<typeof userSigninSchema>
 export const userSignoutSchema = z.object({
     refreshToken: z.string().min(1)
 })
+

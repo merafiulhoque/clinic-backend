@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server/server.ts",
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc --project tsconfig.json && tsc-alias",
     "typecheck": "tsc --noEmit",
     "start": "node dist/server/server.js"
   },
@@ -37,6 +37,7 @@
     "@types/node": "^26.6.5",
     "@types/swagger-ui-express": "^4.1.8",
     "prisma": "^7.10.0",
+    "tsc-alias": "^1.9.9",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

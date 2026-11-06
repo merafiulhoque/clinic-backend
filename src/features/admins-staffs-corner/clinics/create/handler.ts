@@ -16,6 +16,7 @@ export const clinicCreateHandler = async (
     }
 
     const result = validateSchema(req.body, clinicCreateSchema)
+    console.log(req.body, result)
 
     if (!result.success){
         throw new AppError(ERR_INVALID_INPUT.status, ERR_INVALID_INPUT.error)

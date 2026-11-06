@@ -34,3 +34,20 @@ export const getUserByEmail = async (
         select: { id: true, passwordHash: true }
     })
 }
+
+export const getLoggedInUsersDetail = async (
+    userId: number
+) => {
+    return prisma.clinicMember.findMany({
+        where: {userId},
+        select: {
+            role: true,
+            clinic: {
+                select: {
+                    name: true,
+                    location: true
+                }
+            }
+        }
+    })
+}

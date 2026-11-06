@@ -4,6 +4,7 @@ import { createScheduleSchema } from "../schemas.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 import { ERR_INVALID_INPUT, ERR_UNAUTHORIZED } from "shared/domainerrors/errors.js";
 import { createScheduleService } from "./service.js";
+import { formatTime } from "shared/utilities/formatTime.js";
 
 export const createDoctorScheduleHandler = async (
     req: Request,
@@ -19,15 +20,15 @@ export const createDoctorScheduleHandler = async (
     if (!result.success) throw new AppError(
         ERR_INVALID_INPUT.status, ERR_INVALID_INPUT.error
     )
-    
+
     const serviceResult = await createScheduleService(result.data, user.id)
     if (!serviceResult.created){
         const conflictDetails = serviceResult.conflicts.map(
             conflict =>
-                `${conflict.clinic} (${conflict.location}): ${conflict.startTime}-${conflict.endTime}`
+                `${conflict.clinic} (${conflict.location}): ${formatTime(conflict.startTime)}-${formatTime(conflict.endTime)}`
         ).join("; ");
         throw new AppError(409, `schedule conflicts with existing sessions: ${conflictDetails}`);
     }
-    
+
     return res.status(201).send("schedule created successfully")
 }
