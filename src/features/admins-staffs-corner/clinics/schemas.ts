@@ -3,18 +3,15 @@ import z from "zod";
 
 export const clinicCreateSchema = z.object({
     name: z.string(),
-    location: z.string()
+    location: z.string(),
+    ownerName: z.string()
 })
 
 export type clinicCreateData = z.infer<typeof clinicCreateSchema>
 
-export type Clinic = {
-    id: number,
-    name: string,
-    location: string
-}
-
-export type UserClinics = {
+export type UserClinicInfo = {
     role: Role,
-    clinic: Clinic
+    clinicId: number
+    clinicName: string
+    clinicLocation: string
 }

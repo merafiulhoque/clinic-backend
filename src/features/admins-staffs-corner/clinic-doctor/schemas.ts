@@ -1,4 +1,4 @@
-import { Weekday } from "generated/prisma/enums.js"
+
 import z from "zod"
 
 export const assignDoctorToClinicSchema = z.object({

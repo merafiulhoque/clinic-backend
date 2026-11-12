@@ -11,10 +11,10 @@ export const viewScheduleService = async (
 
 const refineSchedule = (schedules: RawDoctorSchedule[]): RefinedDoctorSchedule[] => {
     return schedules.map(sc => ({
-        id: sc.id,
+        scheduleId: sc.id,
         doctorClinicId: sc.doctorClinicId,
         dayOfWeek: sc.dayOfWeek,
-        startTime: formatTime(sc.startTime),
-        endTime: formatTime(sc.endTime)
+        startTime: sc.startTime,
+        endTime: sc.endTime
     }))
 }

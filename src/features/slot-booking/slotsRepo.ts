@@ -1,6 +1,6 @@
 import { AppointmentStatus, Weekday } from "generated/prisma/enums.js"
 import { prisma } from "shared/clients/prisma.js"
-import { BookSlotData } from "./schema.js"
+import { BookSlotData } from "./schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { APPOINTMENT_DURATION } from "shared/config/const.js"
 
@@ -15,7 +15,7 @@ const weekdays = [
 ]
 
 const getWeekDayFromDate = (date: Date): Weekday => {
-    return weekdays[date.getDay()]
+    return weekdays[date.getUTCDay()]
 }
 
 export const viewAppointments = async (
@@ -90,6 +90,7 @@ export const bookSlot = async (
                 id: data.scheduleId
             },
             select: {
+                dayOfWeek: true,
                 startTime: true,
                 endTime: true,
                 appointments: {
@@ -114,6 +115,9 @@ export const bookSlot = async (
         })
 
         if(!slot) throw new AppError(404, "schedule not found")
+        if (slot.dayOfWeek !== getWeekDayFromDate(data.appointmentDate)) {
+            throw new AppError(400, "schedule is not available on this date")
+        }
         
         const lastAppointmentTime = slot.appointments[0]?.endTime ?? null
         const nextAvailableTime = lastAppointmentTime ?? slot.startTime

@@ -1,4 +1,6 @@
 import express from "express"
+import cors from "cors"
+import cfg from "shared/config/env.js"
 import { errorHandler } from "shared/utilities/errorHandler.js"
 import morgan from "morgan"
 import YAML from "yaml"
@@ -28,6 +30,7 @@ export const app = express()
 app.use(express.json({limit: "50kb"}))
 app.use(express.urlencoded({extended: true}))
 
+app.use(cors({ origin: cfg.ALLOWED_ORIGIN }))
 
 app.use(morgan("dev"))
 

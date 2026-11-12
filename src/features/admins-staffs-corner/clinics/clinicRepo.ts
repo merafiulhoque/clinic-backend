@@ -1,5 +1,5 @@
 import { prisma } from "shared/clients/prisma.js"
-import { clinicCreateData } from "./clinicSchema.js"
+import { clinicCreateData } from "./schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { Role } from "generated/prisma/enums.js"
 
@@ -12,7 +12,7 @@ export const doesClinicExists = async (
             ownerId: userId,
             name: data.name,
             location: data.location
-        }, 
+        },
         select: {
             id: true
         }
@@ -60,13 +60,13 @@ export const createClinic = async (
             data: {
                 role: Role.OWNER,
                 clinicId: newClinic.id,
-                userId: userId
+                userId: userId,
+                name: data.ownerName
             },
             select: {id: true}
         })
         return newClinic.name
     })
-    
 }
 
 export const getClinics = async (

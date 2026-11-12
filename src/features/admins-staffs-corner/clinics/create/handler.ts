@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { validateSchema } from "shared/utilities/validateSchema.js"
-import { clinicCreateSchema } from "../clinicSchema.js"
+import { clinicCreateSchema } from "../schemas.js"
 import { AppError } from "shared/utilities/errorHandler.js"
 import { ERR_INVALID_INPUT, ERR_UNAUTHORIZED } from "shared/domainerrors/errors.js"
 import { clinicCreateService } from "./service.js"
@@ -16,6 +16,7 @@ export const clinicCreateHandler = async (
     }
 
     const result = validateSchema(req.body, clinicCreateSchema)
+    console.log(req.body, result)
 
     if (!result.success){
         throw new AppError(ERR_INVALID_INPUT.status, ERR_INVALID_INPUT.error)

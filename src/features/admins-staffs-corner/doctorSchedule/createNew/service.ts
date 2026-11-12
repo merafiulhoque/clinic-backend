@@ -1,4 +1,4 @@
-import { createScheduleData } from "../doctorScheduleSchema.js";
+import { createScheduleData } from "../schemas.js";
 import { AppError } from "shared/utilities/errorHandler.js";
 import { createDoctorSchedule, doctorsExistingSchedule, findDoctorClinic } from "../doctorScheduleRepo.js";
 

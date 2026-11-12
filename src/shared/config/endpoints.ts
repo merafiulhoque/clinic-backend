@@ -7,7 +7,8 @@ export const PREFIX_AUTH = BASE + "/auth"
 export const AUTH_ENDPOINTS = {
     SIGNUP: "/signup",
     SIGNIN: "/signin",
-    SIGNOUT: "/signout"
+    SIGNOUT: "/signout",
+    ME: "/me"
 } as const
 
 export const PREFIX_CLINIC = BASE + "/clinic"
@@ -17,17 +18,19 @@ export const CLINIC_ENDPOINTS = {
     GET_USER_CLINIC_INFO: "/get-info"
 } as const
 
-export const PREFIX_MEMBER = BASE + "/member" 
+export const PREFIX_MEMBER = BASE + "/member"
 
 export const MEMBER_ENDPOINTS = {
-    CREATE: "/create"
+  CREATE: "/create",
+  MEMBERS: "/:clinicId/members"
 } as const
 
 export const PREFIX_DOCTOR = BASE + "/doctor"
 export const DOCTOR_ENDPOINTS = {
     CREATE: "/create",
-    GET: "/get-list"
-    
+    GET: "/get-list",
+    ALL: "/all-doctors-lookup"
+
 } as const
 
 export const PREFIX_SCHEDULE = BASE + "/schedule"
@@ -38,7 +41,8 @@ export const SCHEDULE_ENDPOINTS = {
 export const PREFIX_DOCTOR_CLINIC = BASE + "/doctor-clinic"
 
 export const DOCTORCLINIC_ENDPOINTS = {
-    ASSIGN: "/assign"
+    ASSIGN: "/assign",
+    CLINIC_AND_DOCTORS: "/all"
 } as const
 
 export const PREFIX_PUBLIC_CORNER = BASE + "/public-corner"

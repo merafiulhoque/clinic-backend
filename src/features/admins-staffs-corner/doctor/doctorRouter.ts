@@ -4,6 +4,7 @@ import { getUserMiddleware } from "shared/middlewares/getUserMiddleware.js";
 import { asyncHandler } from "shared/utilities/asyncHandler.js";
 import { createDoctorHandler } from "./create/handler.js";
 import { getDoctorsListHandler } from "./getCreatedDoctorsList/handler.js";
+import { allDoctorsLookup } from "./all-doctors/handler.js";
 
 export const doctorRouter = Router()
 
@@ -17,4 +18,10 @@ doctorRouter.get(
     DOCTOR_ENDPOINTS.GET,
     getUserMiddleware,
     asyncHandler(getDoctorsListHandler)
+)
+
+doctorRouter.get(
+  DOCTOR_ENDPOINTS.ALL,
+  getUserMiddleware,
+  asyncHandler(allDoctorsLookup)
 )

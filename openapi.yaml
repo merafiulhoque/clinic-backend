@@ -11,6 +11,30 @@ servers:
     description: Development server
 
 paths:
+  /api/v1/auth/signout:
+    post:
+      summary: Sign out and revoke the current tokens
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        "200":
+          description: Tokens revoked
+        "401":
+          description: Invalid or expired token
+
   /api/v1/auth/login:
     post:
       summary: Login a user
@@ -37,3 +61,9 @@ paths:
         "401":
           description: Invalid credentials
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

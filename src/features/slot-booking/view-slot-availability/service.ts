@@ -1,4 +1,4 @@
-import { Slots } from "../schema.js";
+import { Slots } from "../schemas.js";
 import { viewAppointments } from "../slotsRepo.js";
 
 export const viewSlotService = async (

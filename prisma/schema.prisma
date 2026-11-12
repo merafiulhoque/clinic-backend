@@ -61,6 +61,7 @@ model Clinic {
 
 model ClinicMember {
   id Int @id @default(autoincrement())
+  name String
   role Role
   clinicId Int
   clinic Clinic @relation(fields: [clinicId], references: [id])
@@ -76,7 +77,7 @@ model Doctor {
   firstName String
   middleName String?
   lastName String?
-  qualification String?
+  qualification String
   additionalQualification String?
   specialization String?
   experience String?
@@ -104,7 +105,7 @@ model DoctorSchedule {
   doctorClinic DoctorClinic @relation(fields: [doctorClinicId], references: [id], onDelete: Cascade)
   dayOfWeek Weekday
   startTime Int // minute since midnight, eg 600 for 10.00 AM
-  endTime Int 
+  endTime Int
   appointments Appointment[]
 }
 

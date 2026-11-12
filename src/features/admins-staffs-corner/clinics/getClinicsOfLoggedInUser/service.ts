@@ -1,8 +1,30 @@
+import { Role } from "generated/prisma/enums.js"
 import { getClinics } from "../clinicRepo.js"
-import { UserClinics } from "../clinicSchema.js"
+import { UserClinicInfo } from "../schemas.js"
+
 
 export const userClinicInfoService = async (
     userId: number
 ) => {
-    return await getClinics(userId)
+  const userClinics = await getClinics(userId)
+  console.log(userClinics)
+  return normalize(userClinics)
+}
+
+const normalize = (
+    clinics: {
+        role: Role;
+        clinic: {
+            id: number;
+            name: string;
+            location: string;
+        };
+    }[]
+): UserClinicInfo[] => {
+    return clinics.map(c => ({
+        role: c.role,
+        clinicId: c.clinic.id,
+        clinicName: c.clinic.name,
+        clinicLocation: c.clinic.location
+    }))
 }
