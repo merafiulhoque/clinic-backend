@@ -61,6 +61,7 @@ export const viewClinicMembers = async (
         select: {
           id: true,
           name: true,
+          role: true
         }
       }
     }

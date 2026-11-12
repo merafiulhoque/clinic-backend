@@ -50,3 +50,23 @@ export const getAssignedDoctors = async  ( // we need id of doctorClinic and doc
     }
    })
 }
+
+
+export const importAddedDoctors = async (
+  ownerId: number
+) => {
+  const doctors = await prisma.doctor.findMany({
+    where: {
+      doctorClinics: {
+        some: {
+          clinics: {
+            ownerId
+          }
+        }
+      },
+    },
+    select: {
+      
+    }
+  })
+}

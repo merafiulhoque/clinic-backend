@@ -40,12 +40,12 @@ export type Clinic = {
 }
 
 export type normalizedDoctorList = {
-    id: number,
-    name: string,
-    qualification: string | null,
-    additionalQualification: string | null,
-    specialization: string | null,
-    clinics: {
+    doctorId: number,
+    doctorName: string,
+    doctorQualification: string | null,
+    doctorAdditionalQualification: string | null,
+    doctorSpecialization: string | null,
+    doctorClinics: {
         doctorClinicId: number,
         clinicId: number,
         clinicName: string,
@@ -63,9 +63,9 @@ export type RawDoctorSchedule = {
 }
 
 export type RefinedDoctorSchedule = {
-    id: number;
+    scheduleId: number;
     doctorClinicId: number;
     dayOfWeek: Weekday;
-    startTime: string;
-    endTime: string;
+    startTime: int;
+    endTime: int;
 }
