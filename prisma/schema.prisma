@@ -7,6 +7,99 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
+  passwordHash   String
+  name           String?
+  clinics        Clinic[]
+  clinicMember   ClinicMember[]
+  createdDoctors Doctor[]       @relation("doctorCreatedBy")
+  doctor         Doctor?
+}
+
+model Clinic {
+  id            Int            @id @default(autoincrement())
+  name          String
+  location      String
+  ownerId       Int
+  owner         User           @relation(fields: [ownerId], references: [id])
+  clinicMembers ClinicMember[]
+  doctorClinic  DoctorClinic[]
+
+  @@unique([ownerId, name, location])
+}
+
+model ClinicMember {
+  id       Int    @id @default(autoincrement())
+  role     Role
+  clinicId Int
+  userId   Int
+  name     String
+  clinic   Clinic @relation(fields: [clinicId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@unique([clinicId, userId])
+}
+
+model Doctor {
+  id                      Int            @id @default(autoincrement())
+  userId                  Int            @unique
+  firstName               String
+  middleName              String?
+  lastName                String?
+  qualification           String
+  additionalQualification String?
+  experience              String?
+  createdById             Int
+  registrationNo          String
+  specialization          String?
+  createdBy               User           @relation("doctorCreatedBy", fields: [createdById], references: [id])
+  user                    User           @relation(fields: [userId], references: [id])
+  doctorClinics           DoctorClinic[]
+}
+
+model DoctorClinic {
+  id             Int              @id @default(autoincrement())
+  fees           Int
+  doctorId       Int
+  clinicId       Int
+  clinics        Clinic           @relation(fields: [clinicId], references: [id])
+  doctor         Doctor           @relation(fields: [doctorId], references: [id])
+  doctorSchedule DoctorSchedule[]
+
+  @@unique([doctorId, clinicId])
+}
+
+model DoctorSchedule {
+  id             Int           @id @default(autoincrement())
+  doctorClinicId Int
+  dayOfWeek      Weekday
+  startTime      Int
+  endTime        Int
+  appointments   Appointment[]
+  doctorClinic   DoctorClinic  @relation(fields: [doctorClinicId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  patientName      String
+  patientEmail     String
+  patientPhone     String
+  appointmentDate  DateTime          @db.Date
+  startTime        Int
+  endTime          Int
+  status           AppointmentStatus @default(PENDING)
+  idempotencyKey   String            @unique
+  createdAt        DateTime          @default(now())
+  doctorScheduleId Int
+  id               Int               @id @default(autoincrement())
+  updatedAt        DateTime          @updatedAt
+  doctorSchedule   DoctorSchedule    @relation(fields: [doctorScheduleId], references: [id])
+
+  @@unique([appointmentDate, doctorScheduleId, patientPhone])
+  @@index([doctorScheduleId, appointmentDate, status])
+}
+
 enum Role {
   OWNER
   STAFF
@@ -26,7 +119,6 @@ enum AppointmentStatus {
   CANCELLED
 }
 
-
 enum Weekday {
   SUNDAY
   MONDAY
@@ -35,95 +127,4 @@ enum Weekday {
   THURSDAY
   FRIDAY
   SATURDAY
-}
-
-model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  passwordHash String
-  name String?
-  clinics Clinic[]
-  clinicMember ClinicMember[]
-  doctor Doctor?
-  createdDoctors Doctor[] @relation("doctorCreatedBy")
-}
-
-model Clinic {
-  id Int @id @default(autoincrement())
-  name String
-  location String
-  ownerId Int
-  owner User @relation(fields: [ownerId], references: [id])
-  clinicMembers ClinicMember[]
-  doctorClinic DoctorClinic[]
-  @@unique([ownerId, name, location])
-}
-
-model ClinicMember {
-  id Int @id @default(autoincrement())
-  name String
-  role Role
-  clinicId Int
-  clinic Clinic @relation(fields: [clinicId], references: [id])
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  @@unique([clinicId, userId])
-}
-
-model Doctor {
-  id Int @id @default(autoincrement())
-  userId Int @unique
-  user User @relation(fields: [userId], references: [id])
-  firstName String
-  middleName String?
-  lastName String?
-  qualification String
-  additionalQualification String?
-  specialization String?
-  experience String?
-  createdById Int
-  registrationNo String
-  createdBy User @relation("doctorCreatedBy", fields: [createdById], references: [id])
-  doctorClinics DoctorClinic[]
-}
-
-model DoctorClinic {
-  id Int @id @default(autoincrement())
-  fees Int
-  doctorId Int
-  doctor Doctor @relation(fields: [doctorId], references: [id])
-  clinicId Int
-  clinics Clinic @relation(fields: [clinicId], references: [id])
-  doctorSchedule DoctorSchedule[]
-  @@unique([doctorId, clinicId])
-}
-
-
-model DoctorSchedule {
-  id Int @id @default(autoincrement())
-  doctorClinicId Int //id of DoctorClinic's id
-  doctorClinic DoctorClinic @relation(fields: [doctorClinicId], references: [id], onDelete: Cascade)
-  dayOfWeek Weekday
-  startTime Int // minute since midnight, eg 600 for 10.00 AM
-  endTime Int
-  appointments Appointment[]
-}
-
-
-model Appointment {
-  id Int @id @default(autoincrement())
-  doctorScheduleId Int
-  doctorSchedule DoctorSchedule @relation(fields: [doctorScheduleId], references: [id])
-  patientName String
-  patientEmail String
-  patientPhone String
-  appointmentDate DateTime @db.Date
-  startTime Int //minutes since midnight
-  endTime Int //minutes since midnight
-  status AppointmentStatus @default(PENDING)
-  idempotencyKey String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([doctorScheduleId, appointmentDate, status])
-  @@unique([appointmentDate, doctorScheduleId, patientPhone])
 }

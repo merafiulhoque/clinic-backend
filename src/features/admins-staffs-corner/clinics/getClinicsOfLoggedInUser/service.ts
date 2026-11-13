@@ -7,7 +7,6 @@ export const userClinicInfoService = async (
     userId: number
 ) => {
   const userClinics = await getClinics(userId)
-  console.log(userClinics)
   return normalize(userClinics)
 }
 

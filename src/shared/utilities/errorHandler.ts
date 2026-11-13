@@ -36,9 +36,6 @@ export const errorHandler = (
             return res.status(404).json({error: "record not found"})
         }
     }
-
-
-    console.error("Unhandled request error:", err)
-    return res.status(500).json({error: "Internal server error"})
+    return res.status(500).json({error: err instanceof Error ? err.message : "Internal server error"})
 
 }

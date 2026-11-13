@@ -6,7 +6,7 @@ export const createDoctorSchema = z.object({
     firstName: z.string(),
     middleName: z.string().optional(),
     lastName: z.string().optional(),
-    qualification: z.string().optional(),
+    qualification: z.string(),
     additionalQualification: z.string().optional(),
     experience: z.string().optional(),
     registrationNo: z.string(),
@@ -15,4 +15,3 @@ export const createDoctorSchema = z.object({
 
 
 export type createDoctorData = z.infer<typeof createDoctorSchema>
-

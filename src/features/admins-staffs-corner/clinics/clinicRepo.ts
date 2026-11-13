@@ -66,6 +66,10 @@ export const createClinic = async (
             select: {id: true}
         })
         return newClinic.name
+    },
+      {
+        maxWait: 15000,
+        timeout: 30000
     })
 }
 

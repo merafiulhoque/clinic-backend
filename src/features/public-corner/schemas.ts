@@ -66,6 +66,6 @@ export type RefinedDoctorSchedule = {
     scheduleId: number;
     doctorClinicId: number;
     dayOfWeek: Weekday;
-    startTime: int;
-    endTime: int;
+    startTime: number;
+    endTime: number;
 }

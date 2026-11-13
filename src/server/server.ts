@@ -1,5 +1,5 @@
 import { redis } from "shared/clients/redis.js";
-import { app } from "./app.js";
+import { createApp } from "./app.js";
 import cfg from "shared/config/env.js";
 (async function StartServer(){
 
@@ -11,7 +11,7 @@ import cfg from "shared/config/env.js";
         await redis.connect()
         console.log("REDIS: connected")
 
-        app.listen(Number(cfg.PORT), () => {
+        createApp().listen(Number(cfg.PORT), () => {
             console.log(`SERVER: running at ${cfg.HOST + ":" + cfg.PORT}`)
         })
     } catch (error) {
