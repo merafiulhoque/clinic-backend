@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server/server.ts",
-    "build": "tsc --project tsconfig.json && tsc-alias",
-    "typecheck": "tsc --noEmit",
-    "start": "node dist/server/server.js"
+    "build": "prisma generate && tsc --project tsconfig.json && tsc-alias",
+    "typecheck": "prisma generate && tsc --noEmit",
+    "start": "npx prisma migrate deploy && node dist/server/server.js"
   },
   "keywords": [],
   "author": "",
