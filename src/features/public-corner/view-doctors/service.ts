@@ -12,9 +12,10 @@ export const viewDoctorsService = async (
 const normalizeDoctorsList = (data: rawDoctorsList[]): normalizedDoctorList[] => {
     return data.map(raw => ({
         doctorId: raw.id,
-        doctorName: [raw.firstName.startsWith("Dr") ? "" : "Dr.",
-                raw.firstName, raw.middleName,
-                raw.lastName
+        doctorName: [
+                  raw.firstName,
+                  raw.middleName,
+                  raw.lastName
                 ].filter(Boolean).join(" "),
         doctorQualification: raw.qualification,
         doctorAdditionalQualification: raw.additionalQualification,

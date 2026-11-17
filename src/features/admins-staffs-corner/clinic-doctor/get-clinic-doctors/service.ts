@@ -26,7 +26,6 @@ const normalize = (
     doctorsOfThisClinic: cAndD.doctorClinic.map(doctor => ({
       doctorClinicId: doctor.id,
       doctorName: [
-        doctor.doctor.firstName.startsWith("Dr") ? "" : "Dr.",
         doctor.doctor.firstName,
         doctor.doctor.middleName,
         doctor.doctor.lastName
