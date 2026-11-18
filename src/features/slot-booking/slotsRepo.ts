@@ -189,8 +189,7 @@ export const bookSlot = async (data: BookSlotData) => {
   } catch (error) {
     // Handle duplicate records
     if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
+      error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002"
     ) {
       const existingAppointment =
         await prisma.appointment.findUnique({
@@ -236,7 +235,7 @@ export const bookSlot = async (data: BookSlotData) => {
             new Date(data.appointmentDate).getTime();
 
         if (isSameRequest) {
-          return existingAppointment;
+          throw new AppError(409, "Already slot booked against this credentials")
         }
       }
     }

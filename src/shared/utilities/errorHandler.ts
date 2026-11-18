@@ -1,5 +1,6 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
+
 import { Request, Response, NextFunction } from "express";
+import { Prisma } from "generated/prisma/client.js";
 import jwt from "jsonwebtoken";
 
 
@@ -28,14 +29,16 @@ export const errorHandler = (
         return res.status(401).json({error: "unauthorized"})
     }
 
-    if (err instanceof PrismaClientKnownRequestError){
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+
         if (err.code === "P2002"){
             return res.status(409).json({error: "record already exists"})
         }
         if (err.code === "P2025"){
             return res.status(404).json({error: "record not found"})
         }
-    }
-    return res.status(500).json({error: err instanceof Error ? err.message : "Internal server error"})
+  }
+    console.error(err)
+    return res.status(500).json({error: "Internal Server Error"})
 
 }
