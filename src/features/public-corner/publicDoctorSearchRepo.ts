@@ -90,6 +90,9 @@ export const viewDoctors = async (
         orderBy: { id: "asc" },
     });
 }
+
+
+
 export const viewSchedule = async (
     doctorClinicId: number
 ) => {

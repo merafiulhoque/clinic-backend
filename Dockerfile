@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
-COPY prisma7.config.ts ./prisma.config.ts
+COPY prisma7.config.ts ./prisma7.config.ts
 RUN npm ci
 
 #stage 2 -- building application
@@ -28,6 +28,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+RUN apk add --no-cache openssl
+
 COPY package*.json ./
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
@@ -36,4 +38,4 @@ COPY --from=builder /app/prisma7.config.ts ./prisma7.config.ts
 
 EXPOSE 5000
 
-CMD [ "sh", "-c", "npx prisma migrate deploy && node dist/server/server.js" ]
+CMD [ "sh", "-c", "node dist/server/server.js" ]
