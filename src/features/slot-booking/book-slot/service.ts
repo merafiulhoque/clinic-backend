@@ -3,13 +3,13 @@ import { BookingReportData, BookSlotData } from "../schemas.js";
 import { bookSlot } from "../slotsRepo.js";
 import { formatDoctorName } from "shared/utilities/formatDoctorName.js";
 import { formatTime } from "shared/utilities/formatTime.js";
-import { sendWpMessage } from "shared/clients/wp.js";
+// import { sendWpMessage } from "shared/clients/wp.js";
 
 export const bookSlotService = async (
     data: BookSlotData
 ) => {
   const bookingData = await bookSlot(data)
-  const whatsappSendData = await sendWpMessage(`${"91"+data.patientPhone}`, normalize(data.patientName, bookingData))
+  // const whatsappSendData = await sendWpMessage(`${"91"+data.patientPhone}`, normalize(data.patientName, bookingData))
 
   return bookingData
 }
