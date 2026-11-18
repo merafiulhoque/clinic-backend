@@ -7,50 +7,54 @@ export const viewDoctors = async (
     return prisma.doctor.findMany({
         where: {
             AND: [
-            {
-                doctorClinics: {
-                some: {},
+                {
+                    doctorClinics: {
+                        some: {
+                            doctorSchedule: { // <-- Enforces that the doctorClinic must have at least one schedule
+                                some: {},
+                            },
+                        },
+                    },
                 },
-            },
-            ...(searchData.doctorName
-                ? [{
-                    OR: [
-                    { firstName: { contains: searchData.doctorName, mode: "insensitive" as const } },
-                    { lastName: { contains: searchData.doctorName, mode: "insensitive" as const } },
-                    { middleName: { contains: searchData.doctorName, mode: "insensitive" as const } },
-                    ],
-                }]
-                : []),
-            ...(searchData.location
-                ? [{
-                    doctorClinics: {
-                    some: {
-                        clinics: {
-                        location: { contains: searchData.location, mode: "insensitive" as const },
-                        },
-                    },
-                    },
-                }]
-                : []),
-            ...(searchData.clinicName
-                ? [{
-                    doctorClinics: {
-                    some: {
-                        clinics: {
-                        name: { contains: searchData.clinicName, mode: "insensitive" as const },
-                        },
-                    },
-                    },
-                }]
-                : []),
-            ...(searchData.specialization
-                ? [{
-                    specialization: {
-                        contains: searchData.specialization,
-                        mode: "insensitive" as const,
-                    },
+                ...(searchData.doctorName
+                    ? [{
+                        OR: [
+                            { firstName: { contains: searchData.doctorName, mode: "insensitive" as const } },
+                            { lastName: { contains: searchData.doctorName, mode: "insensitive" as const } },
+                            { middleName: { contains: searchData.doctorName, mode: "insensitive" as const } },
+                        ],
                     }]
-                : []),
+                    : []),
+                ...(searchData.location
+                    ? [{
+                        doctorClinics: {
+                            some: {
+                                clinics: {
+                                    location: { contains: searchData.location, mode: "insensitive" as const },
+                                },
+                            },
+                        },
+                    }]
+                    : []),
+                ...(searchData.clinicName
+                    ? [{
+                        doctorClinics: {
+                            some: {
+                                clinics: {
+                                    name: { contains: searchData.clinicName, mode: "insensitive" as const },
+                                },
+                            },
+                        },
+                    }]
+                    : []),
+                ...(searchData.specialization
+                    ? [{
+                        specialization: {
+                            contains: searchData.specialization,
+                            mode: "insensitive" as const,
+                        },
+                    }]
+                    : []),
             ],
         },
         select: {
@@ -62,25 +66,30 @@ export const viewDoctors = async (
             additionalQualification: true,
             specialization: true,
             doctorClinics: {
-            select: {
-                id: true,
-                fees: true,
-                clinics: {
+                // Also filter the nested selection so only clinics WITH schedules are returned in the result
+                where: {
+                    doctorSchedule: {
+                        some: {},
+                    },
+                },
                 select: {
                     id: true,
-                    name: true,
-                    location: true,
+                    fees: true,
+                    clinics: {
+                        select: {
+                            id: true,
+                            name: true,
+                            location: true,
+                        },
+                    },
                 },
-                },
-            },
             },
         },
         skip: (searchData.page - 1) * searchData.limit,
         take: searchData.limit,
         orderBy: { id: "asc" },
-        });
+    });
 }
-
 export const viewSchedule = async (
     doctorClinicId: number
 ) => {

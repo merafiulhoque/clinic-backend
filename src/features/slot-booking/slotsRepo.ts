@@ -71,8 +71,31 @@ export const bookSlot = async (
                 startTime: true,
                 endTime: true,
                 status: true,
-            },
-        })
+                doctorSchedule: {
+                  select: {
+                    doctorClinic: {
+                      select: {
+                        doctor: {
+                          select: {
+                            firstName: true,
+                            middleName: true,
+                            lastName: true
+                            }
+                        },
+                        clinics: {
+                          select: {
+                            name: true,
+                            location: true
+                          }
+                        }
+                      },
+                    },
+
+                    }
+                  }
+                }
+        }
+        )
 
         if (existingAppointment) {
             return existingAppointment
@@ -118,7 +141,7 @@ export const bookSlot = async (
         if (slot.dayOfWeek !== getWeekDayFromDate(data.appointmentDate)) {
             throw new AppError(400, "schedule is not available on this date")
         }
-        
+
         const lastAppointmentTime = slot.appointments[0]?.endTime ?? null
         const nextAvailableTime = lastAppointmentTime ?? slot.startTime
 
@@ -137,7 +160,37 @@ export const bookSlot = async (
                 patientEmail: data.patientEmail,
                 patientPhone: data.patientPhone,
                 idempotencyKey: data.idempotencyKey,
-            },
+          },
+          select: {
+              id: true,
+              doctorScheduleId: true,
+              appointmentDate: true,
+              startTime: true,
+              endTime: true,
+              status: true,
+              doctorSchedule: {
+                select: {
+                  doctorClinic: {
+                    select: {
+                      doctor: {
+                        select: {
+                          firstName: true,
+                          middleName: true,
+                          lastName: true
+                          }
+                      },
+                      clinics: {
+                        select: {
+                          name: true,
+                          location: true
+                        }
+                      }
+                    },
+                  },
+
+                  }
+                }
+              }
         });
 
         return appointment;

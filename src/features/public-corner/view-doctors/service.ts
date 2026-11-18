@@ -1,11 +1,32 @@
+import { redis } from "shared/clients/redis.js";
 import { viewDoctors } from "../publicDoctorSearchRepo.js";
 import { rawDoctorsList, PublicDoctorSearchData, normalizedDoctorList } from "../schemas.js";
+import { redisKeyDocPub } from "shared/config/const.js";
 
 export const viewDoctorsService = async (
     searchData: PublicDoctorSearchData
 ) => {
+
+  const redisEntry = await redis.get(redisKeyDocPub(searchData.page))
+  if (!redisEntry) {
     const rawList = await viewDoctors(searchData)
-    return normalizeDoctorsList(rawList)
+    const doctorList = normalizeDoctorsList(rawList)
+
+    await redis.set(
+      redisKeyDocPub(searchData.page),
+      JSON.stringify(doctorList),
+      {
+        expiration: {
+          type: "EX",
+          value: 10*60 // 10 minutes
+        }
+      }
+    )
+    return doctorList
+  }
+
+  const doctorsList = await JSON.parse(redisEntry)
+  return doctorsList
 }
 
 

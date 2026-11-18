@@ -1,3 +1,4 @@
+import { AppointmentStatus } from "generated/prisma/enums.js";
 import z from "zod";
 
 export const viewSlotSchema = z.object({
@@ -24,3 +25,26 @@ export const bookSlotSchema = z.object({
 });
 
 export type BookSlotData = z.infer<typeof bookSlotSchema>;
+
+
+export type BookingReportData = {
+    appointmentDate: Date;
+    doctorSchedule: {
+        doctorClinic: {
+            doctor: {
+                firstName: string;
+                middleName: string | null;
+                lastName: string | null;
+            };
+            clinics: {
+                name: string;
+                location: string;
+            };
+        };
+    };
+    id: number;
+    startTime: number;
+    endTime: number;
+    status: AppointmentStatus;
+    doctorScheduleId: number;
+}
