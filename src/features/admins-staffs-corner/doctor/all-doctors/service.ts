@@ -25,7 +25,6 @@ const normalize = (
   return data.map(doctor => ({
     doctorId: doctor.id,
     doctorName: [
-      doctor.firstName.startsWith("Dr") ? "" : "Dr.",
       doctor.firstName,
       doctor.middleName,
       doctor.lastName
