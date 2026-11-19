@@ -1,8 +1,10 @@
 
+import { redisKeyGetStat } from "shared/config/const.js";
 import { BookingReportData, BookSlotData } from "../schemas.js";
 import { bookSlot } from "../slotsRepo.js";
 import { formatDoctorName } from "shared/utilities/formatDoctorName.js";
 import { formatTime } from "shared/utilities/formatTime.js";
+import { redis } from "shared/clients/redis.js";
 // import { sendWpMessage } from "shared/clients/wp.js";
 
 export const bookSlotService = async (
@@ -10,7 +12,8 @@ export const bookSlotService = async (
 ) => {
   const bookingData = await bookSlot(data)
   // const whatsappSendData = await sendWpMessage(`${"91"+data.patientPhone}`, normalize(data.patientName, bookingData))
-
+  await redis.del(redisKeyGetStat(bookingData.doctorSchedule.doctorClinic.clinics.id)) // delete when a person books a slot
+  
   return bookingData
 }
 

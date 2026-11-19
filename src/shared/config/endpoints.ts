@@ -15,7 +15,8 @@ export const PREFIX_CLINIC = BASE + "/clinic"
 
 export const CLINIC_ENDPOINTS = {
     CREATE: "/create",
-    GET_USER_CLINIC_INFO: "/get-info"
+    GET_USER_CLINIC_INFO: "/get-info",
+    GET_STAT: "/:clinicId/get-stat"
 } as const
 
 export const PREFIX_MEMBER = BASE + "/member"

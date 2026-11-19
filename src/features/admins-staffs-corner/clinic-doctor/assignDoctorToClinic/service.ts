@@ -2,6 +2,8 @@ import { getOwnerId } from "shared/repository/sharedRepo.js";
 import { assignDoctorToClinic } from "../clinicDoctorRepo.js";
 import { assignDoctorToClinicData } from "../schemas.js";
 import { AppError } from "shared/utilities/errorHandler.js";
+import { redis } from "shared/clients/redis.js";
+import { redisKeyGetStat } from "shared/config/const.js";
 
 export const assignDoctorService = async (
     data: assignDoctorToClinicData,
@@ -23,5 +25,6 @@ export const assignDoctorService = async (
 
     const result = await assignDoctorToClinic(data)
 
+    await redis.del(redisKeyGetStat(data.clinicId))
     return `Dr. ${result.doctor.firstName} added to Clinic : ${result.clinics.name}`
 }

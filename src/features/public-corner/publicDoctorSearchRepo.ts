@@ -4,16 +4,31 @@ import { PublicDoctorSearchData } from "./schemas.js";
 export const viewDoctors = async (
     searchData: PublicDoctorSearchData
 ) => {
+    // Single combined filter so schedule, location, and clinicName match the SAME clinic
+    const doctorClinicFilter = {
+        doctorSchedule: {
+            some: {},
+        },
+        ...(searchData.location || searchData.clinicName
+            ? {
+                clinics: {
+                    ...(searchData.location
+                        ? { location: { contains: searchData.location, mode: "insensitive" as const } }
+                        : {}),
+                    ...(searchData.clinicName
+                        ? { name: { contains: searchData.clinicName, mode: "insensitive" as const } }
+                        : {}),
+                },
+            }
+            : {}),
+    };
+
     return prisma.doctor.findMany({
         where: {
             AND: [
                 {
                     doctorClinics: {
-                        some: {
-                            doctorSchedule: { // <-- Enforces that the doctorClinic must have at least one schedule
-                                some: {},
-                            },
-                        },
+                        some: doctorClinicFilter,
                     },
                 },
                 ...(searchData.doctorName
@@ -23,28 +38,6 @@ export const viewDoctors = async (
                             { lastName: { contains: searchData.doctorName, mode: "insensitive" as const } },
                             { middleName: { contains: searchData.doctorName, mode: "insensitive" as const } },
                         ],
-                    }]
-                    : []),
-                ...(searchData.location
-                    ? [{
-                        doctorClinics: {
-                            some: {
-                                clinics: {
-                                    location: { contains: searchData.location, mode: "insensitive" as const },
-                                },
-                            },
-                        },
-                    }]
-                    : []),
-                ...(searchData.clinicName
-                    ? [{
-                        doctorClinics: {
-                            some: {
-                                clinics: {
-                                    name: { contains: searchData.clinicName, mode: "insensitive" as const },
-                                },
-                            },
-                        },
                     }]
                     : []),
                 ...(searchData.specialization
@@ -66,12 +59,7 @@ export const viewDoctors = async (
             additionalQualification: true,
             specialization: true,
             doctorClinics: {
-                // Also filter the nested selection so only clinics WITH schedules are returned in the result
-                where: {
-                    doctorSchedule: {
-                        some: {},
-                    },
-                },
+                where: doctorClinicFilter,
                 select: {
                     id: true,
                     fees: true,
@@ -89,7 +77,7 @@ export const viewDoctors = async (
         take: searchData.limit,
         orderBy: { id: "asc" },
     });
-}
+};
 
 
 

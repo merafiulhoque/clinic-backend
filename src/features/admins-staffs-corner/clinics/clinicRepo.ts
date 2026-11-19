@@ -92,3 +92,37 @@ export const getClinics = async (
         }
     })
 }
+
+export const getStat = async (
+  clinicId: number
+) => {
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+  const endOfDay = new Date()
+  endOfDay.setHours(23, 59, 59, 999)
+
+  return Promise.all([
+    prisma.doctorClinic.count({
+      where: {clinicId}
+    }),
+    prisma.clinicMember.count({
+      where: {clinicId}
+    }),
+    prisma.appointment.count({
+      where: {
+        appointmentDate: {
+          gte: startOfDay,
+          lt: endOfDay
+        },
+        status: {
+          not: "CANCELLED"
+        },
+        doctorSchedule: {
+          doctorClinic: {
+            clinicId
+          }
+        }
+      }
+    })
+  ])
+}

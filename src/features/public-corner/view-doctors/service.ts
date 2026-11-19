@@ -6,28 +6,39 @@ import { redisKeyDocPub } from "shared/config/const.js";
 export const viewDoctorsService = async (
     searchData: PublicDoctorSearchData
 ) => {
+    const hasFilters = Boolean(
+        searchData.doctorName ||
+        searchData.location ||
+        searchData.clinicName ||
+        searchData.specialization
+    );
 
-  const redisEntry = await redis.get(redisKeyDocPub(searchData.page))
-  if (!redisEntry) {
-    const rawList = await viewDoctors(searchData)
-    const doctorList = normalizeDoctorsList(rawList)
+    // 1. Skip cache for filtered queries
+    if (hasFilters) {
+        const rawList = await viewDoctors(searchData);
+        return normalizeDoctorsList(rawList);
+    }
 
-    await redis.set(
-      redisKeyDocPub(searchData.page),
-      JSON.stringify(doctorList),
-      {
+    // 2. Cache only unfiltered paginated results (include limit too)
+    const cacheKey = `${redisKeyDocPub(searchData.page)}:${searchData.limit}`;
+    const redisEntry = await redis.get(cacheKey);
+
+    if (redisEntry) {
+        return JSON.parse(redisEntry);
+    }
+
+    const rawList = await viewDoctors(searchData);
+    const doctorList = normalizeDoctorsList(rawList);
+
+    await redis.set(cacheKey, JSON.stringify(doctorList), {
         expiration: {
-          type: "EX",
-          value: 10*60 // 10 minutes
-        }
-      }
-    )
-    return doctorList
-  }
+            type: "EX",
+            value: 5 * 60, // 5 minutes
+        },
+    });
 
-  const doctorsList = await JSON.parse(redisEntry)
-  return doctorsList
-}
+    return doctorList;
+};
 
 
 const normalizeDoctorsList = (data: rawDoctorsList[]): normalizedDoctorList[] => {

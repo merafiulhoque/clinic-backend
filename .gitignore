@@ -10,3 +10,9 @@ skills-lock.json
 /dist
 .idea
 
+/node_modules
+/.env*
+/FRONTEND_DESIGN_PLAN.md
+/thingstobuild.md
+/DOCUMENTATION.md
+/ENDPOINTS.md

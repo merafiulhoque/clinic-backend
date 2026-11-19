@@ -168,6 +168,7 @@ export const bookSlot = async (data: BookSlotData) => {
                     },
                     clinics: {
                       select: {
+                        id: true,
                         name: true,
                         location: true,
                       },
@@ -216,6 +217,7 @@ export const bookSlot = async (data: BookSlotData) => {
                     },
                     clinics: {
                       select: {
+                        id: true,
                         name: true,
                         location: true,
                       },

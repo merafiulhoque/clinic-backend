@@ -56,3 +56,15 @@ export const getOwnerId = async (
         }
     })
 }
+
+export const getUserRole = ( clinicId: number, userId: number ) => {
+  return prisma.clinicMember.findFirst({
+    where: {
+      clinicId,
+      userId
+    },
+    select: {
+      role: true
+    }
+  })
+}

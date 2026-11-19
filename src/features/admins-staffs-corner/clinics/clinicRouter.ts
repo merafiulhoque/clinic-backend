@@ -4,11 +4,12 @@ import { asyncHandler } from "shared/utilities/asyncHandler.js";
 import { clinicCreateHandler } from "./create/handler.js";
 import { getUserMiddleware } from "shared/middlewares/getUserMiddleware.js";
 import { getUserClinicInfoHandler } from "./getClinicsOfLoggedInUser/handler.js";
+import { getClinicStatHandler } from "./get-clinic-stats/handler.js";
 
 export const clinicRouter = Router()
 
 clinicRouter.post(
-    CLINIC_ENDPOINTS.CREATE, 
+    CLINIC_ENDPOINTS.CREATE,
     getUserMiddleware,
     asyncHandler(clinicCreateHandler)
 )
@@ -19,3 +20,8 @@ clinicRouter.get(
     asyncHandler(getUserClinicInfoHandler)
 )
 
+clinicRouter.get(
+  CLINIC_ENDPOINTS.GET_STAT,
+  getUserMiddleware,
+  asyncHandler(getClinicStatHandler)
+)
