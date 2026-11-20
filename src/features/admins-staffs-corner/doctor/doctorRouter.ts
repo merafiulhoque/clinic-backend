@@ -5,8 +5,10 @@ import { asyncHandler } from "shared/utilities/asyncHandler.js";
 import { createDoctorHandler } from "./create/handler.js";
 import { getDoctorsListHandler } from "./getCreatedDoctorsList/handler.js";
 import { allDoctorsLookup } from "./all-doctors/handler.js";
+import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js";
 
 export const doctorRouter = Router()
+doctorRouter.use(rateLimitMiddleware(15, 60_000)) // 15 req per min
 
 doctorRouter.post(
     DOCTOR_ENDPOINTS.CREATE,

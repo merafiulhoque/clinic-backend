@@ -1,5 +1,3 @@
-
-const v = "v1"
 const BASE = "/api/v1" //applied for all routes
 
 export const PREFIX_AUTH = BASE + "/auth"
@@ -53,4 +51,10 @@ export const PUBLIC_ENDPOINTS = {
     GET_SCHEDULE: "/:doctorClinicId/schedule",
     GET_SLOTS: "/:doctorClinicId/slots",
     BOOK_SLOT: "/book-slot"
+} as const
+
+export const PREFIX_PATIENT_MODULE = BASE + "/patient-module"
+
+export const PATIENT_MODULE_ENDPOINTS = {
+    VIEW_APPOINTMENTS: "/:clinicId/view-appointments"
 } as const

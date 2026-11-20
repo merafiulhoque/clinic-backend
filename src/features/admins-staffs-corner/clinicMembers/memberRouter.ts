@@ -4,8 +4,10 @@ import { getUserMiddleware } from "shared/middlewares/getUserMiddleware.js";
 import { asyncHandler } from "shared/utilities/asyncHandler.js";
 import { createMemberHandler } from "./create/handler.js";
 import { viewClinicMembers } from "./view-clinic-members/handler.js";
+import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js";
 
 export const memberRouter = Router()
+memberRouter.use(rateLimitMiddleware(20, 60_000)) // 20 req per minute
 
 memberRouter.post(
     MEMBER_ENDPOINTS.CREATE,

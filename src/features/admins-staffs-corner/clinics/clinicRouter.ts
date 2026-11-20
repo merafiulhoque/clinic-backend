@@ -5,8 +5,10 @@ import { clinicCreateHandler } from "./create/handler.js";
 import { getUserMiddleware } from "shared/middlewares/getUserMiddleware.js";
 import { getUserClinicInfoHandler } from "./getClinicsOfLoggedInUser/handler.js";
 import { getClinicStatHandler } from "./get-clinic-stats/handler.js";
+import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js";
 
 export const clinicRouter = Router()
+clinicRouter.use(rateLimitMiddleware(20, 60_000)) // 20 req per min
 
 clinicRouter.post(
     CLINIC_ENDPOINTS.CREATE,

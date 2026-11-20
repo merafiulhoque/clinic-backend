@@ -10,6 +10,7 @@ import {
     PREFIX_DOCTOR,
     PREFIX_DOCTOR_CLINIC,
     PREFIX_MEMBER,
+    PREFIX_PATIENT_MODULE,
     PREFIX_PUBLIC_CORNER,
     PREFIX_SCHEDULE
 } from "shared/config/endpoints.js"
@@ -21,10 +22,13 @@ import { scheduleRouter } from "features/admins-staffs-corner/doctorSchedule/sch
 import { doctorClinicRouter } from "features/admins-staffs-corner/clinic-doctor/doctorClinicRouter.js"
 import { publicRouter } from "features/public-corner/publicRouter.js"
 import { slotRouter } from "features/slot-booking/slotRouter.js"
+import { pmRouter } from "features/patient-module/pmRouter.js"
+import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js"
 
 export function createApp() {
   const app = express()
-  app.use(morgan("combined"))
+  app.use(rateLimitMiddleware(50, 60*1000)) // 50 limit per 60 seconds
+  app.use(morgan("dev"))
 
   app.use(express.json({limit: "50kb"}))
   app.use(express.urlencoded({extended: true}))
@@ -41,6 +45,7 @@ export function createApp() {
   app.use(PREFIX_DOCTOR_CLINIC, doctorClinicRouter)
   app.use(PREFIX_PUBLIC_CORNER, publicRouter)
   app.use(PREFIX_PUBLIC_CORNER, slotRouter)
+  app.use(PREFIX_PATIENT_MODULE, pmRouter)
 
 
   app.use(errorHandler)
