@@ -52,7 +52,7 @@ export const rateLimitMiddleware = (
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const identifier = req.ip || req.socket.remoteAddress || "unknown";
-      
+
 
       const key = `rate-limit:${identifier}`;
 
@@ -66,10 +66,8 @@ export const rateLimitMiddleware = (
           now.toString(),
         ],
       }) as number[];
-      
-      console.log("Rate limiter triggered:", req.ip);
-      console.log("Redis result:", result);
-      
+
+
       const [allowed, remaining, retryAfter] = result;
 
       res.setHeader("RateLimit-Limit", limit);

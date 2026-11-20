@@ -35,6 +35,13 @@ export function createApp() {
 
   app.use(cors({ origin: cfg.ALLOWED_ORIGIN }))
 
+  app.head("/", (_req, res) => {
+    return res.status(200).send("ok")
+  })
+
+  app.get("/", (_req, res) => {
+    return res.status(200).send("ok")
+  })
 
 
   app.use(PREFIX_AUTH, authRouter)
