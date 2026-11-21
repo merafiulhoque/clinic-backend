@@ -51,8 +51,9 @@ export const rateLimitMiddleware = (
 
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const cfIp = req.headers["cf-connecting-ip"]
 
-      const identifier = req.ip
+      const identifier = typeof cfIp === "string" && cfIp.length > 0 ? cfIp : req.ip
 
       if(!identifier) return res.status(400).send({error: "bad request"})
 

@@ -24,42 +24,34 @@ import { publicRouter } from "features/public-corner/publicRouter.js"
 import { slotRouter } from "features/slot-booking/slotRouter.js"
 import { pmRouter } from "features/patient-module/pmRouter.js"
 import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js"
+import helmet from "helmet"
 
 export function createApp() {
   const app = express()
-  app.set("trust proxy", false)
+
+  app.use(helmet())
+  app.use(cors({
+    origin: cfg.ALLOWED_ORIGIN,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    credentials: false,
+  }))
+
+
+  app.use(morgan(":method :status :response-time ms", {
+      skip: (_req, res) => res.statusCode < 400,
+    })
+  );
+
   app.use(rateLimitMiddleware(50, 60*1000)) // 50 limit per 60 seconds
-  app.use(morgan("dev"))
 
   app.use(express.json({limit: "50kb"}))
-  app.use(express.urlencoded({extended: true}))
+  app.use(express.urlencoded({extended: true, limit: "50kb"}))
 
-  app.use(cors({ origin: cfg.ALLOWED_ORIGIN }))
 
-  app.head("/", (_req, res) => {
-    return res.status(200).send("ok")
-  })
 
-  app.get("/", (_req, res) => {
-    return res.status(200).send("ok")
-  })
-
-  app.get("/debug-ip",
-    rateLimitMiddleware(1, 60_000),
-    (req, res) => {
-      return res.json({
-      socketIp: req.socket.remoteAddress,
-      xff: req.headers["x-forwarded-for"],
-      cfIp: req.headers["cf-connecting-ip"],
-      ip: req.ip,
-      ips: req.ips,
-      hostName: req.hostname,
-      location: req.headers.location,
-      userAgent: req.headers["user-agent"]
-
-    });
-  });
-
+  app.head("/", (_req, res) => { return res.status(200).send("ok") })
+  app.get("/", (_req, res) => { return res.status(200).send("ok") })
 
   app.use(PREFIX_AUTH, authRouter)
   app.use(PREFIX_CLINIC, clinicRouter)
