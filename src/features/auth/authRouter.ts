@@ -9,9 +9,27 @@ import { requireUserHandler } from "./me/handler.js";
 import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js";
 
 export const authRouter = Router()
-authRouter.use(rateLimitMiddleware(5, 60*1000)) // 5 req per minute
 
-authRouter.post(AUTH_ENDPOINTS.SIGNUP, asyncHandler(signupHandler))
-authRouter.post(AUTH_ENDPOINTS.SIGNIN, asyncHandler(signinHandler))
-authRouter.post(AUTH_ENDPOINTS.SIGNOUT, getUserMiddleware, asyncHandler(signoutHandler))
-authRouter.get(AUTH_ENDPOINTS.ME, getUserMiddleware, asyncHandler(requireUserHandler))
+
+authRouter.post(
+  AUTH_ENDPOINTS.SIGNUP,
+  rateLimitMiddleware(5, 60*1000),
+  asyncHandler(signupHandler)
+)
+authRouter.post(
+  AUTH_ENDPOINTS.SIGNIN,
+  rateLimitMiddleware(5, 60*1000),
+  asyncHandler(signinHandler)
+)
+authRouter.post(
+  AUTH_ENDPOINTS.SIGNOUT,
+  rateLimitMiddleware(15, 60*1000),
+  getUserMiddleware,
+  asyncHandler(signoutHandler)
+)
+authRouter.get(
+  AUTH_ENDPOINTS.ME,
+  rateLimitMiddleware(50, 60*1000),
+  getUserMiddleware,
+  asyncHandler(requireUserHandler)
+)

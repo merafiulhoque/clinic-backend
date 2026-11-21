@@ -51,7 +51,10 @@ export const rateLimitMiddleware = (
 
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const identifier = req.ip || req.socket.remoteAddress || "unknown";
+
+      const identifier = req.ip
+
+      if(!identifier) return res.status(400).send({error: "bad request"})
 
 
       const key = `rate-limit:${identifier}`;

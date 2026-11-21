@@ -6,7 +6,7 @@ import { getUserMiddleware } from "shared/middlewares/getUserMiddleware.js";
 import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js";
 
 export const pmRouter = Router()
-pmRouter.use(rateLimitMiddleware(15, 60*1000)) // 15 req per minute
+pmRouter.use(rateLimitMiddleware(100, 60*1000)) // 15 req per minute
 
 pmRouter.get(
   PATIENT_MODULE_ENDPOINTS.VIEW_APPOINTMENTS,

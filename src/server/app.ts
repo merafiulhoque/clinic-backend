@@ -27,6 +27,7 @@ import { rateLimitMiddleware } from "shared/middlewares/rateLimitMiddleware.js"
 
 export function createApp() {
   const app = express()
+  app.set("trust proxy", 1)
   app.use(rateLimitMiddleware(50, 60*1000)) // 50 limit per 60 seconds
   app.use(morgan("dev"))
 
@@ -42,6 +43,20 @@ export function createApp() {
   app.get("/", (_req, res) => {
     return res.status(200).send("ok")
   })
+
+  app.get("/debug-ip",
+    rateLimitMiddleware(1, 60_000),
+    (req, res) => {
+    return res.json({
+      ip: req.ip,
+      ips: req.ips,
+      xff: req.headers["x-forwarded-for"],
+      hostName: req.hostname,
+      location: req.headers.location,
+      userAgent: req.headers["user-agent"]
+
+    });
+  });
 
 
   app.use(PREFIX_AUTH, authRouter)
